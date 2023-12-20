@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<waves>
+    <wave id="0">
+        <enemies>
+            <wolf>2</wolf>
+            <birds>0</birds>
+        </enemies>
+    </wave>
+    <wave id="1">
+        <enemies>
+            <wolf>5</wolf>
+            <birds>5</birds>
+        </enemies>
+    </wave>
+    <wave id="2">
+        <enemies>
+            <wolf>10</wolf>
+            <birds>0</birds>
+        </enemies>
+    </wave>
+</waves>
