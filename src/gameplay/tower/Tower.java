@@ -11,6 +11,7 @@ import java.util.List;
 
 import javax.swing.JButton;
 
+import gameplay.effect.Effect;
 import gameplay.enemy.Enemy;
 
 public abstract class Tower implements Serializable
@@ -21,6 +22,7 @@ public abstract class Tower implements Serializable
     protected int height;
     protected Enemy target;
     protected int damage;
+    protected Effect effect;
     private float reloadTime;
     private float currentTime;
     protected int lvl;

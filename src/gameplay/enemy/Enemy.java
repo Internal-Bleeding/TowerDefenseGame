@@ -2,6 +2,9 @@ package gameplay.enemy;
 
 import javax.swing.JLabel;
 
+import gameplay.effect.Effect;
+import gameplay.effect.EffectManager;
+
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
@@ -20,10 +23,11 @@ public abstract class Enemy implements Serializable
     Speed speed;
     Point2D pos;
     float x, y;
+    private EffectManager effects;
     protected int width;
     protected int height;
     Point2D destination;
-    Queue<Point2D.Float> Destinations =  new LinkedList<>();
+    private Queue<Point2D.Float> Destinations =  new LinkedList<>();
     boolean isCurrent;
     private boolean isAir;
 
@@ -92,9 +96,9 @@ public abstract class Enemy implements Serializable
         isCurrent = false;
     }
 
-    public void Hit(int damage) 
+    public void Hit(int damage)
     {
-        health -= damage;
+        health -= 10;
         System.out.println(health);
     }
 
