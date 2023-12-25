@@ -15,11 +15,10 @@ import gameplay.tower.TowerManager;
 public class GamePanel extends JPanel implements Runnable
 {
     private Thread gameThread;
+    public static float gameSpeed;
     Player player;
     EnemyManager enemies;
     TowerManager towers;
-    float gameSpeed;
-
     /** 
      * Vissza adja  a towermanager-t
      * @return jelenlegi towermanager
@@ -149,9 +148,14 @@ public class GamePanel extends JPanel implements Runnable
     @Override
     public void run()
     {
+        long lastTime = System.nanoTime();
         double drawinterval = 1000000000/30;
         while (gameThread != null)
         {
+            long time = System.nanoTime();
+            gameSpeed = (time - lastTime) / 30000000;
+            //System.out.println(gameSpeed);
+            lastTime = time; 
             if (player.GetHealth() > 0) 
             {
                 //UPDATE:
@@ -160,10 +164,9 @@ public class GamePanel extends JPanel implements Runnable
            
                 //DRAW:
                 this.repaint();
-                
             }
             double nextDrawTime = System.nanoTime() + drawinterval;
-            try
+           try
             {
                 double remaining = nextDrawTime - System.nanoTime();
                 if (remaining < 0)
@@ -172,7 +175,7 @@ public class GamePanel extends JPanel implements Runnable
             } catch (InterruptedException e) 
             {
                 e.printStackTrace();
-            }   
+            }
         }
     }
 }
