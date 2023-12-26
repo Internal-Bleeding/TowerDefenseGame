@@ -4,8 +4,12 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.LayoutManager;
 import java.awt.RenderingHints;
+import java.awt.image.BufferedImage;
+import java.awt.image.ImageObserver;
+
 import javax.swing.JPanel;
 
 import gameplay.enemy.EnemyManager;
@@ -16,6 +20,9 @@ public class GamePanel extends JPanel implements Runnable
 {
     private Thread gameThread;
     public static float gameSpeed;
+    private BufferedImage img;
+    private int WIDTH = 1000;
+    private int HEIGHT = 750;
     Player player;
     EnemyManager enemies;
     TowerManager towers;
@@ -60,7 +67,7 @@ public class GamePanel extends JPanel implements Runnable
     {
         super(layout);
         newGame();
-        setOpaque(true);  
+        setOpaque(true);
     }
 
     /*
@@ -83,6 +90,7 @@ public class GamePanel extends JPanel implements Runnable
     private void drawMap(Graphics g)
     {
         Graphics2D g2d = (Graphics2D) g;
+        //g2d.drawImage(0, 0, WIDTH, HEIGHT, imageWidth, imageHeight, null);
         g2d.setColor(new Color(208, 144, 102));
         g2d.setStroke(new BasicStroke(50));
         g2d.drawLine(0, 115, 600, 115);
@@ -149,32 +157,19 @@ public class GamePanel extends JPanel implements Runnable
     public void run()
     {
         long lastTime = System.nanoTime();
-        double drawinterval = 1000000000/30;
         while (gameThread != null)
         {
             long time = System.nanoTime();
-            gameSpeed = (time - lastTime) / 30000000;
-            //System.out.println(gameSpeed);
-            lastTime = time; 
+            gameSpeed = (float)(time - lastTime) / 10000000;
+            System.out.println(gameSpeed);
+            lastTime = time;
             if (player.GetHealth() > 0) 
             {
                 //UPDATE:
                 enemies.update(gameSpeed, player);
                 towers.update(enemies, gameSpeed);
-           
                 //DRAW:
                 this.repaint();
-            }
-            double nextDrawTime = System.nanoTime() + drawinterval;
-           try
-            {
-                double remaining = nextDrawTime - System.nanoTime();
-                if (remaining < 0)
-                    remaining = 0;
-                Thread.sleep((long) (remaining)/1000000);
-            } catch (InterruptedException e) 
-            {
-                e.printStackTrace();
             }
         }
     }

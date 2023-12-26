@@ -5,14 +5,10 @@ import java.awt.Graphics;
 
 public class Bird extends Enemy
 {
-    public Bird(int x, int y)
-    {
-        super(x, y, Speed.veryfast, 10, 20, 15, 15);
-    }
 
-     public Bird()
+    public Bird()
     {
-        super(0, 0, Speed.veryfast, 10, 20, 15, 15);
+        super(0, 0, Speed.veryfast, 10, 20, 15, 15, "witch.jpg");
     }
 
     

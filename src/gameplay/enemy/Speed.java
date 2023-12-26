@@ -1,7 +1,7 @@
 package gameplay.enemy;
 
 public enum Speed {
-    slow(1.0f), medium(2.0f), fast(1.5f), veryfast(2.0f);
+    slow(0.1f), medium(0.4f), fast(0.8f), veryfast(1.2f);
 
     private float speed;
 

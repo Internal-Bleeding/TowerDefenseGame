@@ -12,7 +12,7 @@ public class Giant extends Enemy
      */
     public Giant(int x, int y)
     {
-        super(x, y, Speed.slow, 100, 100, 50, 50);
+        super(x, y, Speed.slow, 100, 100, 50, 50, "");
     }
      
      /** 
