@@ -11,7 +11,7 @@ public class Wolf extends Enemy
      */
     public Wolf()
     {
-        super(0, 0, Speed.veryfast, 10, 20, 20, 20, "../res/archer.jpg");
+        super(0, 0, Speed.veryfast, 10, 20, 20, 20);
     }
 
 

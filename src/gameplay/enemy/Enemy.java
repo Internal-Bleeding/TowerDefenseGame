@@ -30,7 +30,7 @@ public abstract class Enemy implements Serializable
     Point2D pos;
     float x, y;
     private EffectManager effects;
-    private Image img;
+    private Image sprite;
     protected int width;
     protected int height;
     Point2D destination;
@@ -54,16 +54,9 @@ public abstract class Enemy implements Serializable
         this.y = y;
     }
 
-    public void ImportImg(String s)
+    public void SetSprite(Image img)
     {
-        try {
-            img = ImageIO.read(getClass().getResource("../icemage.jpg")).getScaledInstance(width, height, 0);
-        } catch (Exception ex)
-        {
-            System.out.println(ex);
-            System.exit(0);
-        }
-
+        this.sprite = img;
     }
 
     public boolean isFlying() {return isAir;}
@@ -87,7 +80,7 @@ public abstract class Enemy implements Serializable
      * @param health az enemy élete
      * @param az enemy ára ami a spawn-olásához
      */
-    protected Enemy (int x, int y, Speed speed, int health, int reward, int width, int height, String fileName)
+    protected Enemy (int x, int y, Speed speed, int health, int reward, int width, int height)
     {
         SetDestinations();
         this.x = x;
@@ -99,7 +92,6 @@ public abstract class Enemy implements Serializable
         this.width = width;
         this.height = height;
         isCurrent = false;
-        ImportImg(fileName);
     }
 
     
@@ -131,7 +123,7 @@ public abstract class Enemy implements Serializable
         //Health bar drawing:
         g.setColor(Color.RED);
         //g.fillRect((int)x - width / 2, (int)y, width, 5);
-        g.drawImage(img, (int)x - width / 2, (int)y - height / 2, width, height, null);
+        g.drawImage(sprite, (int)x - width / 2, (int)y - height / 2, width, height, null);
         if (isCurrent)
         {
             Graphics2D g2d = (Graphics2D)g;

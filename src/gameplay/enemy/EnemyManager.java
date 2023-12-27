@@ -3,6 +3,8 @@ package gameplay.enemy;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.Serializable;
 import java.lang.reflect.Constructor;
@@ -14,8 +16,9 @@ import java.util.HashMap;
 import org.w3c.dom.Document;  
 import org.w3c.dom.NodeList;  
 import org.w3c.dom.Node;  
-import org.w3c.dom.Element;  
+import org.w3c.dom.Element;
 
+import javax.imageio.ImageIO;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -25,9 +28,23 @@ public class EnemyManager implements Serializable
 {
     private ArrayList<Enemy> enemies;
     private HashMap<String, Enemy> enemyTypes;
+    private HashMap<String, Image> enemySprites;
     //Image here
     private int length;
     private int wave;
+
+    public Image ImportImg(String s) 
+    {
+        Image img = null;
+        try {
+            img = ImageIO.read(getClass().getResource(s));
+        } catch (Exception ex)
+        {   
+            System.out.println(ex);
+            System.exit(0);
+        }
+        return img;
+    }
 
     public EnemyManager()
     {
@@ -36,6 +53,8 @@ public class EnemyManager implements Serializable
         enemyTypes.put("wolf", new Wolf());
         enemyTypes.put("birds", new Bird());
         length = 0;
+        enemySprites = new HashMap<String, Image>();
+        enemySprites.put("wolf", ImportImg("../../res/firemage.jpg"));
         wave = 0;
     }
 
@@ -113,16 +132,18 @@ public class EnemyManager implements Serializable
             Element element = (Element) node;
 
             Set<String> enemySet = enemyTypes.keySet();
-            for (String s : enemySet)
+            for (String key : enemySet)
             {
                 System.out.println(element);
-                int enemyCount = Integer.parseInt(element.getElementsByTagName(s).item(0).getTextContent());
+                int enemyCount = Integer.parseInt(element.getElementsByTagName(key).item(0).getTextContent());
                 for (int n = 0; n < enemyCount; n++)
                 {
-                    Class<? extends Enemy> cls = enemyTypes.get(s).getClass();
+                    Class<? extends Enemy> cls = enemyTypes.get(key).getClass();
                     System.out.println(cls + " " + enemyCount);
                     Enemy e = cls.getConstructor().newInstance();
                     e.SetLoc(-n * 50, 100);
+                    System.out.println(enemySprites.get(key));
+                    e.SetSprite(enemySprites.get(key));
                     enemies.add(e);
                     length++;
                 }

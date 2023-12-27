@@ -8,7 +8,7 @@ public class Bird extends Enemy
 
     public Bird()
     {
-        super(0, 0, Speed.veryfast, 10, 20, 15, 15, "witch.jpg");
+        super(0, 0, Speed.veryfast, 10, 20, 15, 15);
     }
 
     
