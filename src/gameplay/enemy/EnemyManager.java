@@ -25,6 +25,7 @@ public class EnemyManager implements Serializable
 {
     private ArrayList<Enemy> enemies;
     private HashMap<String, Enemy> enemyTypes;
+    //Image here
     private int length;
     private int wave;
 

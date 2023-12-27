@@ -7,7 +7,7 @@ public class FirstBoss extends Enemy
 {
     public FirstBoss(int x, int y)
     {
-        super(x, y, Speed.medium, 1000, 500, 50, 50);
+        super(x, y, Speed.medium, 1000, 500, 50, 50, "");
     }
     @Override
     public void draw(Graphics g) {

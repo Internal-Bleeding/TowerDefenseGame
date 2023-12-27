@@ -1,5 +1,7 @@
 package gameplay.enemy;
 
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
 import gameplay.effect.Effect;
@@ -10,7 +12,11 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.geom.Point2D;
+import java.awt.image.BufferedImage;
+import java.io.BufferedWriter;
+import java.io.File;
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -24,6 +30,7 @@ public abstract class Enemy implements Serializable
     Point2D pos;
     float x, y;
     private EffectManager effects;
+    private Image img;
     protected int width;
     protected int height;
     Point2D destination;
@@ -47,6 +54,18 @@ public abstract class Enemy implements Serializable
         this.y = y;
     }
 
+    public void ImportImg(String s)
+    {
+        try {
+            img = ImageIO.read(getClass().getResource("../icemage.jpg")).getScaledInstance(width, height, 0);
+        } catch (Exception ex)
+        {
+            System.out.println(ex);
+            System.exit(0);
+        }
+
+    }
+
     public boolean isFlying() {return isAir;}
 
     public void SetDestinations() 
@@ -68,7 +87,7 @@ public abstract class Enemy implements Serializable
      * @param health az enemy élete
      * @param az enemy ára ami a spawn-olásához
      */
-    protected Enemy (int x, int y, Speed speed, int health, int reward, int width, int height)
+    protected Enemy (int x, int y, Speed speed, int health, int reward, int width, int height, String fileName)
     {
         SetDestinations();
         this.x = x;
@@ -80,21 +99,10 @@ public abstract class Enemy implements Serializable
         this.width = width;
         this.height = height;
         isCurrent = false;
+        ImportImg(fileName);
     }
 
-    public Enemy(Enemy enemy)
-    {
-        SetDestinations();
-        this.x = enemy.x;
-        this.y = enemy.y;
-        this.speed = enemy.speed;
-        this.health = enemy.health;
-        this.maxHealth = enemy.health;
-        this.reward = enemy.reward;
-        this.width = enemy.width;
-        this.height = enemy.height;
-        isCurrent = false;
-    }
+    
 
     public void Hit(int damage)
     {
@@ -123,7 +131,7 @@ public abstract class Enemy implements Serializable
         //Health bar drawing:
         g.setColor(Color.RED);
         //g.fillRect((int)x - width / 2, (int)y, width, 5);
-
+        g.drawImage(img, (int)x - width / 2, (int)y - height / 2, width, height, null);
         if (isCurrent)
         {
             Graphics2D g2d = (Graphics2D)g;

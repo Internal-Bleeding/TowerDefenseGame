@@ -9,14 +9,9 @@ public class Wolf extends Enemy
      * @param x a vizszintes kezdő pozíciója az enemy-nek
      * @param y a függőleges kezdő pozíciója az enemy-nek
      */
-    public Wolf(int x, int y)
-    {
-        super(x, y, Speed.veryfast, 10, 20, 20, 20);
-    }
-
     public Wolf()
     {
-        super(0, 0, Speed.veryfast, 10, 20, 20, 20);
+        super(0, 0, Speed.veryfast, 10, 20, 20, 20, "../res/archer.jpg");
     }
 
 
