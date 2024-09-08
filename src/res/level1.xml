@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<level>
+    <map>
+        <point x="600" y="115"/>
+        <point x="600" y="300"/>
+        <point x="300" y="300"/>
+        <point x="300" y="600"/>
+        <point x="800" y="600"/>
+        <point x="800" y="0"/>
+    </map>
+    <towers>
+        <tower x="300" y="160"/>
+        <tower x="650" y="70"/>
+        <tower x="550" y="160"/>
+        <tower x="650" y="345"/>
+        <tower x="550" y="255"/>
+        <tower x="265" y="255"/>
+        <tower x="345" y="345"/>
+        <tower x="350" y="550"/>
+        <tower x="550" y="550"/>
+        <tower x="750" y="550"/>
+    </towers>
+    <waves>
+        <wave id="0">
+            <enemies>
+                <wolf>2</wolf>
+                <birds>0</birds>
+                <giant>0</giant>
+            </enemies>
+        </wave>
+        <wave id="1">
+            <enemies>
+                <wolf>5</wolf>
+                <birds>5</birds>
+            </enemies>
+        </wave>
+        <wave id="2">
+            <enemies>
+                <wolf>10</wolf>
+            </enemies>
+        </wave>
+        <wave id="3">
+            <enemies>
+                <wolf>5</wolf>
+                <giant>2</giant>
+            </enemies>
+        </wave>
+    </waves>
+</level>

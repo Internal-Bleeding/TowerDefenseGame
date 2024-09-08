@@ -1,37 +1,66 @@
 package gameplay.tower;
 
 import java.awt.Graphics;
+import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
 import gameplay.enemy.EnemyManager;
 
 public class TowerManager implements Serializable
 {
     private ArrayList<Tower> towers;
+    public HashMap<String, Tower> towerTypes;
     Tower current;
     private int length;
 
-    public TowerManager()
+    public void LoadTowers(int level)
     {
         towers = new ArrayList<>();
+        try {
+            File file = new File("src/res/level1.xml");
+            DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+            Document document = docBuilder.parse(file);
+            document.getDocumentElement().normalize();
+
+            NodeList map = document.getElementsByTagName("towers");
+            for(int j = 0; j < map.getLength(); j++)
+            {
+                Element n = (Element) map.item(j);
+                NodeList points = n.getElementsByTagName("tower");
+                for(int i = 0; i < points.getLength(); i++)
+                {
+                    int x = Integer.parseInt(((Element)points.item(i)).getAttribute("x"));
+                    int y = Integer.parseInt(((Element)points.item(i)).getAttribute("y"));
+                    add(new EmptyTower(x, y));
+                }
+            }
+        }
+        catch (Exception e){
+            System.out.println(e);
+            System.exit(0);
+        }
+    }
+
+    public TowerManager()
+    {
+        
+        towerTypes = new HashMap<>();
         length = 0;
-        //add(new EmptyTower(300, 70));
-        add(new EmptyTower(300, 160));
-        //add(new EmptyTower(480, 70));
-        add(new EmptyTower(650, 70));
-
-        add(new EmptyTower(550, 160));
-        add(new EmptyTower(650, 345));
-        add(new EmptyTower(550, 255));
-
-        add(new EmptyTower(265, 255));
-        add(new EmptyTower(345, 345));
-
-        add(new EmptyTower(350, 550));
-        add(new EmptyTower(550, 550));
-        add(new EmptyTower(750, 550));
+        towerTypes.put("cannon", new Cannon());
+        towerTypes.put("freeze", new FreezeTower());
+        LoadTowers(1);
     }
 
     /*

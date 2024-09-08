@@ -4,14 +4,17 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.Serializable;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Queue;
 import java.util.Set;
 import java.util.HashMap;
+import java.util.LinkedList;
 
 import org.w3c.dom.Document;  
 import org.w3c.dom.NodeList;  
@@ -29,21 +32,55 @@ public class EnemyManager implements Serializable
     private ArrayList<Enemy> enemies;
     private HashMap<String, Enemy> enemyTypes;
     private HashMap<String, Image> enemySprites;
-    //Image here
+    private Queue<Point2D.Float> destinations;
     private int length;
     private int wave;
+    private int maxWave;
 
-    public Image ImportImg(String s) 
+    public Image ImportImg(String s)
     {
         Image img = null;
-        try {
-            img = ImageIO.read(getClass().getResource(s));
-        } catch (Exception ex)
+        try
+        {
+            File file = new File("src/res/" + s);
+            img = ImageIO.read(file);       
+        } 
+        catch (Exception ex)
         {   
             System.out.println(ex);
             System.exit(0);
         }
         return img;
+    }
+
+    public void LoadDestinations(int level)
+    {
+        destinations = new LinkedList<>();
+        try {
+            File file = new File("src/res/level1.xml");
+            DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+            Document document = docBuilder.parse(file);
+            document.getDocumentElement().normalize();
+
+            NodeList map = document.getElementsByTagName("map");
+            for(int j = 0; j < map.getLength(); j++)
+            {
+                Element n = (Element) map.item(j);
+                NodeList points = n.getElementsByTagName("point");
+                for(int i = 0; i < points.getLength(); i++)
+                {
+                    float x = Float.parseFloat(((Element)points.item(i)).getAttribute("x"));
+                    float y = Float.parseFloat(((Element)points.item(i)).getAttribute("y"));
+                    System.out.println("X:" + x + "Y:" + y);
+                    destinations.add(new Point2D.Float(x, y));
+                }
+            }
+        }
+        catch (Exception e){
+            System.out.println(e);
+            System.exit(0);
+        }
     }
 
     public EnemyManager()
@@ -52,10 +89,13 @@ public class EnemyManager implements Serializable
         enemyTypes = new HashMap<String, Enemy>();
         enemyTypes.put("wolf", new Wolf());
         enemyTypes.put("birds", new Bird());
+        enemyTypes.put("giant", new Giant());
         length = 0;
         enemySprites = new HashMap<String, Image>();
-        enemySprites.put("wolf", ImportImg("../../res/firemage.jpg"));
+        enemySprites.put("wolf", ImportImg("firemage.jpg"));
         wave = 0;
+        maxWave = 0;
+        LoadDestinations(1);
     }
 
     /*
@@ -121,28 +161,31 @@ public class EnemyManager implements Serializable
     public void NewWave()
     {           
         try {
-            File file = new File("src/res/waves.xml");
+            File file = new File("src/res/level1.xml");
             DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
             Document document = docBuilder.parse(file);
             document.getDocumentElement().normalize();
 
             NodeList nodeList = document.getElementsByTagName("wave");
+            maxWave = nodeList.getLength();
+            if (maxWave < wave)
+            {
+                wave = maxWave;
+            }
             Node node = nodeList.item(wave);
             Element element = (Element) node;
 
             Set<String> enemySet = enemyTypes.keySet();
             for (String key : enemySet)
             {
-                System.out.println(element);
                 int enemyCount = Integer.parseInt(element.getElementsByTagName(key).item(0).getTextContent());
                 for (int n = 0; n < enemyCount; n++)
                 {
                     Class<? extends Enemy> cls = enemyTypes.get(key).getClass();
-                    System.out.println(cls + " " + enemyCount);
                     Enemy e = cls.getConstructor().newInstance();
-                    e.SetLoc(-n * 50, 100);
-                    System.out.println(enemySprites.get(key));
+                    e.SetLoc(-length * (e.width + 20), 100);
+                    e.SetDestinations(destinations);
                     e.SetSprite(enemySprites.get(key));
                     enemies.add(e);
                     length++;
@@ -183,7 +226,7 @@ public class EnemyManager implements Serializable
     {
         g.setColor(Color.BLACK);
         g.setFont(new Font("Consolas", Font.BOLD, 20)); //Possible error
-        g.drawString("Wave: " + wave, 900, 30);
+        g.drawString("Wave: " + wave + "/" + maxWave, 860, 30);
         for (Enemy enemy : enemies)
         {
             enemy.draw(g);

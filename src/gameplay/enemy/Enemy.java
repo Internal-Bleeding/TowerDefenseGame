@@ -34,7 +34,7 @@ public abstract class Enemy implements Serializable
     protected int width;
     protected int height;
     Point2D destination;
-    private Queue<Point2D.Float> Destinations =  new LinkedList<>();
+    private Queue<Point2D.Float> Destinations;
     boolean isCurrent;
     private boolean isAir;
 
@@ -47,10 +47,12 @@ public abstract class Enemy implements Serializable
     public int GetX() {return (int)x;}
     public int GetY() {return (int)y;}
     public void SetCurrent(boolean x) {isCurrent = x;}
+    public Speed GetSpeed() {return speed;}
+    public void SetSpeed(Speed speed) {this.speed = speed;}
 
     public void SetLoc(float x, float y) 
     {
-        this.x = x; 
+        this.x = x;
         this.y = y;
     }
 
@@ -61,14 +63,9 @@ public abstract class Enemy implements Serializable
 
     public boolean isFlying() {return isAir;}
 
-    public void SetDestinations() 
+    public void SetDestinations(Queue<Point2D.Float> destinations)
     {
-        Destinations.add(new Point2D.Float(600, 115));
-        Destinations.add(new Point2D.Float(600, 300));
-        Destinations.add(new Point2D.Float(300, 300));
-        Destinations.add(new Point2D.Float(300, 600));
-        Destinations.add(new Point2D.Float(800, 600));
-        Destinations.add(new Point2D.Float(800, 0));
+        Destinations = new LinkedList<>(destinations);
         destination = Destinations.poll();
     }
 
@@ -82,7 +79,6 @@ public abstract class Enemy implements Serializable
      */
     protected Enemy (int x, int y, Speed speed, int health, int reward, int width, int height)
     {
-        SetDestinations();
         this.x = x;
         this.y = y;
         this.speed = speed;
@@ -122,7 +118,7 @@ public abstract class Enemy implements Serializable
     {
         //Health bar drawing:
         g.setColor(Color.RED);
-        //g.fillRect((int)x - width / 2, (int)y, width, 5);
+        g.fillRect((int)x - width / 2, (int)y - height - 20, health * 2, 5);
         g.drawImage(sprite, (int)x - width / 2, (int)y - height / 2, width, height, null);
         if (isCurrent)
         {

@@ -1,4 +1,4 @@
-package map;
+package game;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
@@ -15,17 +15,20 @@ import javax.swing.JPanel;
 import gameplay.enemy.EnemyManager;
 import gameplay.player.Player;
 import gameplay.tower.TowerManager;
+import importImage.Import;
 
 public class GamePanel extends JPanel implements Runnable
 {
     private Thread gameThread;
-    public static float gameSpeed;
-    private BufferedImage img;
+    public static float deltaTime;
+    public float speed;
+    private BufferedImage backgroundImage;
     private int WIDTH = 1000;
     private int HEIGHT = 750;
     Player player;
     EnemyManager enemies;
     TowerManager towers;
+
     /** 
      * Vissza adja  a towermanager-t
      * @return jelenlegi towermanager
@@ -66,8 +69,10 @@ public class GamePanel extends JPanel implements Runnable
     public GamePanel(LayoutManager layout)
     {
         super(layout);
-        newGame();
         setOpaque(true);
+        speed = 1.0f;
+        backgroundImage = Import.Img("background.jpg");
+        newGame();
     }
 
     /*
@@ -79,9 +84,7 @@ public class GamePanel extends JPanel implements Runnable
         enemies = new EnemyManager();
         towers = new TowerManager();
         player = new Player(3, 300);
-        gameSpeed = 1;
     }
-
     
     /** 
      * A pálya kirajzolása
@@ -90,16 +93,7 @@ public class GamePanel extends JPanel implements Runnable
     private void drawMap(Graphics g)
     {
         Graphics2D g2d = (Graphics2D) g;
-        //g2d.drawImage(0, 0, WIDTH, HEIGHT, imageWidth, imageHeight, null);
-        g2d.setColor(new Color(208, 144, 102));
-        g2d.setStroke(new BasicStroke(50));
-        g2d.drawLine(0, 115, 600, 115);
-        g2d.drawLine(600, 115, 600, 300);
-        g2d.drawLine(300, 300, 600, 300);
-        g2d.drawLine(300, 300, 300, 600);
-        g2d.drawLine(300, 600, 800, 600);
-        g2d.drawLine(800, 0, 800, 600);
-        g2d.setStroke(new BasicStroke(1));
+        g2d.drawImage(backgroundImage, null, 0, 0);
     }
 
 
@@ -107,10 +101,7 @@ public class GamePanel extends JPanel implements Runnable
     public void paintComponent(Graphics g)
     {
         Graphics2D g2d = (Graphics2D) g;
-
-        // Clear background:
-        g2d.setColor(new Color(95, 121, 46));
-        g2d.fillRect(0, 0, getWidth(), getHeight());
+        
         drawMap(g2d);
         // Paint with antialiasing
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -149,6 +140,11 @@ public class GamePanel extends JPanel implements Runnable
         gameThread.start();
     }
 
+    public void deleteGameThread() 
+    {
+        gameThread = null;
+    }
+
     /*
      * A játék thread loop-ja
      * Itt történik a frissités és kirajzolás
@@ -160,17 +156,17 @@ public class GamePanel extends JPanel implements Runnable
         while (gameThread != null)
         {
             long time = System.nanoTime();
-            gameSpeed = (float)(time - lastTime) / 10000000;
-            System.out.println(gameSpeed);
-            lastTime = time;
-            if (player.GetHealth() > 0) 
+            deltaTime = (float)(time - lastTime) / 10_000_000 * speed;
+            System.out.println(deltaTime);
+            if (player.GetHealth() > 0)
             {
                 //UPDATE:
-                enemies.update(gameSpeed, player);
-                towers.update(enemies, gameSpeed);
+                enemies.update(deltaTime, player);
+                towers.update(enemies, deltaTime);
                 //DRAW:
                 this.repaint();
             }
+            lastTime = time;
         }
     }
 }

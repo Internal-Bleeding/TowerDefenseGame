@@ -1,4 +1,4 @@
-package button;
+package ui.button;
 
 import java.awt.Dimension;
 import java.awt.Image;
@@ -26,6 +26,7 @@ public class Button extends JButton
         } catch (Exception ex)
         {
             System.out.println(ex);
+            //System.exit(0);
         }
     }   
 

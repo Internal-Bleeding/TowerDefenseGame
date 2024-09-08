@@ -14,6 +14,11 @@ public class Cannon extends Tower
         super(x, y, 30, 30, 30, 5, 250, 100);
     }
 
+    public Cannon()
+    {
+        super(0, 0, 30, 30, 30, 5, 250, 100);
+    }
+
     
     /** 
      * @param g A Graphics object amire a kirajzolás megtörténik

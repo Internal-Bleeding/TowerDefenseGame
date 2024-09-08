@@ -3,24 +3,24 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
+import game.BottomPanel;
 import gameplay.enemy.Enemy;
 import gameplay.enemy.EnemyManager;
 import gameplay.tower.Tower;
 import gameplay.tower.TowerManager;
-import shop.ShopPanel;
 
 public class MouseEventListener implements MouseListener
 {
     //where initialization occurs:
     //Register for mouse events on blankArea and the panel.
-    ShopPanel panel;
+    BottomPanel panel;
     ArrayList<Tower> towers;
     EnemyManager enemies;
 
     /*
      * Konstruktor a shop panel és a tower-manager megadásával
      */
-    public MouseEventListener(ShopPanel panel, ArrayList<Tower> towers, EnemyManager enemies)
+    public MouseEventListener(BottomPanel panel, ArrayList<Tower> towers, EnemyManager enemies)
     {
         this.panel = panel;
         this.towers = towers;
@@ -38,7 +38,7 @@ public class MouseEventListener implements MouseListener
     * Shop újra beállitása a (new game miatt)
     * Hogy ne kelljen új shop panel-t csinálni új játék esetén
     */
-    public void SetShop(ShopPanel panel) {this.panel = panel;}
+    public void SetShop(BottomPanel panel) {this.panel = panel;}
 
     /*
      * Egér gomblemnyomás esetén megnézi hogy valamelyik torony lett-e

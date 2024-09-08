@@ -10,8 +10,8 @@ import java.util.List;
 
 import javax.swing.JButton;
 
-import button.Button;
 import gameplay.enemy.Enemy;
+import ui.button.Button;
 
 public class EmptyTower extends Tower
 {
@@ -19,6 +19,12 @@ public class EmptyTower extends Tower
     {
         super(x, y, 30, 30, 0, 0, 0, 0);
     }
+
+    public EmptyTower()
+    {
+        super(0, 0, 30, 30, 0, 0, 0, 0);
+    }
+
 
     
     /** 
@@ -45,12 +51,12 @@ public class EmptyTower extends Tower
         ArrayList<JButton> buttons = new ArrayList<>();
         Button cannon = new Button("../res/archer.jpg", 80, 80);
         Button mortar = new Button("../res/rockthrower.jpg", 80, 80);
-        Button flamethrower = new Button("../res/firemage.jpg", 80, 80);
+        Button flamethrower = new Button("../res/icemage.jpg", 80, 80);
         Button healer = new Button("../res/angel.jpg", 80, 80);
         //JButton support = new JButton("SUPPORT");
         cannon.setActionCommand("cannon");
         mortar.setActionCommand("mortar");
-        flamethrower.setActionCommand("flamethrower");
+        flamethrower.setActionCommand("freeze");
         healer.setActionCommand("healer");
         //support.setActionCommand("support");
         buttons.add(cannon);

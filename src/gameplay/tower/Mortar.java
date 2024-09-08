@@ -20,6 +20,11 @@ public class Mortar extends Tower
         super(x, y, 40, 40, 60, 5, 320, 200);
     }
 
+    public Mortar() 
+    {
+        super(0, 0, 40, 40, 60, 5, 320, 200);
+    }
+
     
     /** 
      * @param g A Graphics object amire a kirajzolás megtörténik

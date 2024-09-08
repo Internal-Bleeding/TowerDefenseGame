@@ -10,9 +10,9 @@ public class Giant extends Enemy
      * @param x a vizszintes kezdő pozíciója az enemy-nek
      * @param y a függőleges kezdő pozíciója az enemy-nek
      */
-    public Giant(int x, int y)
+    public Giant()
     {
-        super(x, y, Speed.slow, 100, 100, 50, 50);
+        super(0, 0, Speed.medium, 100, 100, 50, 50);
     }
      
      /** 

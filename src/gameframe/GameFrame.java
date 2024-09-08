@@ -15,17 +15,19 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
+import game.BottomPanel;
+import game.GamePanel;
 import gameframe.mouseeventlistener.MouseEventListener;
 import gameplay.enemy.EnemyManager;
 import gameplay.player.Player;
 import gameplay.tower.TowerManager;
-import map.GamePanel;
-import shop.ShopPanel;
+import ui.TopPanel;
 
 public class GameFrame extends JFrame
 {
     GamePanel PlayArea;
-    ShopPanel shopPanel;
+    TopPanel topPanel;
+    BottomPanel shopPanel;
     MouseEventListener mouseListener;
 
     /*
@@ -93,14 +95,13 @@ public class GameFrame extends JFrame
         this.setResizable(false);
         this.pack();
         this.setSize(1000,750);
-
+        topPanel = new TopPanel(new BorderLayout());
         PlayArea  = new GamePanel(new BorderLayout());
         PlayArea.setBackground(Color.DARK_GRAY);
-        shopPanel = new ShopPanel(new BorderLayout(), PlayArea.GetTowers(), PlayArea.GetPlayer());
+        shopPanel = new BottomPanel(new BorderLayout(), PlayArea.GetTowers(), PlayArea.GetPlayer(), PlayArea);
         //Adding mouse listener
         mouseListener = new MouseEventListener(shopPanel, (ArrayList)PlayArea.GetTowers().GetTowers(), PlayArea.GetEnemies());
         PlayArea.addMouseListener(mouseListener);
-
         this.add(PlayArea, BorderLayout.CENTER);
         this.add(shopPanel, BorderLayout.PAGE_END);
     }
@@ -113,7 +114,7 @@ public class GameFrame extends JFrame
         initComponents();
     }
 
-    /*
+        /*
      * A Game thread elinditása
      * (a játék a saját külön szálán fut)
      */

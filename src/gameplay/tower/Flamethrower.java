@@ -14,6 +14,11 @@ public class Flamethrower extends Tower
         super(x, y, 30, 30, 5, 1, 150, 110);
     }
 
+    public Flamethrower()
+    {
+        super(0, 0, 30, 30, 5, 1, 150, 110);
+    }
+
     
     /** 
      * @param g A Graphics object amire a kirajzolás megtörténik

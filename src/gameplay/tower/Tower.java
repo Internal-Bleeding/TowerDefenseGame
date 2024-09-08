@@ -13,6 +13,7 @@ import javax.swing.JButton;
 
 import gameplay.effect.Effect;
 import gameplay.enemy.Enemy;
+import gameplay.enemy.Speed;
 
 public abstract class Tower implements Serializable
 {
@@ -46,6 +47,11 @@ public abstract class Tower implements Serializable
         this.basePrice = basePrice;
     }
 
+    public void SetLoc(int x, int y) 
+    {
+        this.x = x;
+        this.y = y;
+    }
     public int GetX() {return x;}
     public int GetY() {return y;}
     public void SetCurrent(boolean x) {isCurrent = x;}
@@ -113,6 +119,7 @@ public abstract class Tower implements Serializable
     public void HitTarget(float gameSpeed, List<Enemy> enemies)
     {
         target.Hit(damage);
+        target.SetSpeed(Speed.slow);
     }
     
     
@@ -139,7 +146,7 @@ public abstract class Tower implements Serializable
             else
             {
                 if (currentTime < reloadTime)
-                    currentTime += gameSpeed;
+                    currentTime += 0.5 * gameSpeed;
                 else
                 {
                     HitTarget(gameSpeed, enemies);

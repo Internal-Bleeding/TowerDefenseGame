@@ -7,6 +7,5 @@ public class App {
         GameFrame gameFrame = new GameFrame();
         gameFrame.setVisible(true);
         gameFrame.start();
-        
     }
 }
